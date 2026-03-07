@@ -3,163 +3,197 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velvet — Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <title>Resonance — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0a0708;
-      --surface: #130f10;
-      --border: rgba(255,255,255,0.07);
-      --accent: #e8432d;
-      --accent2: #f5a623;
-      --text: #f2ede8;
-      --muted: #7a6f6a;
+      --bg: #0a0a0c;
+      --card: #111115;
+      --border: rgba(255,255,255,0.06);
+      --accent: #e8ff47;
+      --accent2: #ff4f7b;
+      --text: #f0ede8;
+      --muted: rgba(240,237,232,0.4);
       --input-bg: rgba(255,255,255,0.04);
     }
 
     body {
+      font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       display: flex;
-      overflow: hidden;
-    }
-
-    /* LEFT PANEL — Art */
-    .art-panel {
-      flex: 1;
-      position: relative;
-      display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-    }
-
-    .art-panel::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 70% at 30% 50%, rgba(232,67,45,0.25) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 60% at 70% 30%, rgba(245,166,35,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 80% at 50% 80%, rgba(100,30,60,0.3) 0%, transparent 70%);
-    }
-
-    .vinyl {
       position: relative;
-      width: 320px;
-      height: 320px;
-      animation: spin 8s linear infinite;
-      filter: drop-shadow(0 0 60px rgba(232,67,45,0.4));
     }
 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    .vinyl svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .vinyl-label {
-      position: absolute;
+    /* Animated background blobs */
+    .bg-blobs {
+      position: fixed;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .vinyl-inner {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #1a0e0a 0%, #2d1810 100%);
-      border: 2px solid rgba(232,67,45,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: spin-reverse 8s linear infinite;
-    }
-
-    @keyframes spin-reverse {
-      from { transform: rotate(360deg); }
-      to   { transform: rotate(0deg); }
-    }
-
-    .vinyl-inner span {
-      font-family: 'Playfair Display', serif;
-      font-size: 14px;
-      color: var(--accent);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* Floating notes */
-    .notes {
-      position: absolute;
-      inset: 0;
+      z-index: 0;
       pointer-events: none;
     }
 
-    .note {
+    .blob {
       position: absolute;
-      font-size: 24px;
-      opacity: 0;
-      animation: float-note 6s ease-in-out infinite;
-      color: var(--accent2);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: drift 12s ease-in-out infinite alternate;
     }
 
-    .note:nth-child(1) { left: 15%; top: 20%; animation-delay: 0s; }
-    .note:nth-child(2) { left: 75%; top: 35%; animation-delay: 1.5s; }
-    .note:nth-child(3) { left: 25%; top: 70%; animation-delay: 3s; }
-    .note:nth-child(4) { left: 65%; top: 75%; animation-delay: 4.5s; }
-    .note:nth-child(5) { left: 50%; top: 15%; animation-delay: 2s; color: var(--accent); }
-
-    @keyframes float-note {
-      0%   { opacity: 0; transform: translateY(0) scale(0.8); }
-      20%  { opacity: 0.6; }
-      80%  { opacity: 0.3; }
-      100% { opacity: 0; transform: translateY(-60px) scale(1.2); }
+    .blob-1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, #e8ff47, transparent 70%);
+      top: -120px; left: -100px;
+      animation-delay: 0s;
     }
 
-    .tagline {
-      position: absolute;
-      bottom: 60px;
-      left: 0; right: 0;
-      text-align: center;
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #ff4f7b, transparent 70%);
+      bottom: -80px; right: -80px;
+      animation-delay: -4s;
     }
 
-    .tagline h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 3vw, 44px);
-      font-style: italic;
-      line-height: 1.2;
-      color: var(--text);
-      opacity: 0;
-      animation: fade-up 0.8s ease 0.3s forwards;
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #7b5fff, transparent 70%);
+      top: 40%; left: 60%;
+      animation-delay: -8s;
     }
 
-    .tagline p {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 13px;
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    /* Waveform decoration */
+    .waveform {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 100px;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      padding: 0 20px;
+      opacity: 0.12;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .wave-bar {
+      flex: 1;
+      background: var(--accent);
+      border-radius: 2px 2px 0 0;
+      animation: wave 1.4s ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+
+    @keyframes wave {
+      from { transform: scaleY(var(--min)); }
+      to   { transform: scaleY(var(--max)); }
+    }
+
+    /* Layout */
+    .page {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Left panel */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 50px;
+      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 60px;
+    }
+
+    .brand-icon {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg { width: 22px; height: 22px; }
+
+    .brand-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
       letter-spacing: 3px;
+      color: var(--text);
+    }
+
+    .left-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 6vw, 88px);
+      line-height: 0.9;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    .left-headline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .left-sub {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 340px;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
       text-transform: uppercase;
-      opacity: 0;
-      animation: fade-up 0.8s ease 0.6s forwards;
+      letter-spacing: 1.5px;
     }
 
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Divider */
+    /* Divider between panels */
     .divider {
       width: 1px;
       background: var(--border);
@@ -167,113 +201,132 @@
       align-self: stretch;
     }
 
-    /* RIGHT PANEL — Form */
-    .form-panel {
-      width: 440px;
-      min-height: 100vh;
-      background: var(--surface);
+    /* Right panel — form */
+    .right-panel {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
       padding: 60px 50px;
-      position: relative;
-      opacity: 0;
-      animation: slide-in 0.7s ease 0.2s forwards;
-    }
-
-    @keyframes slide-in {
-      from { opacity: 0; transform: translateX(30px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    .form-panel::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, var(--text) 40%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .logo-sub {
-      font-size: 11px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 48px;
+      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.15s both;
     }
 
     .form-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-style: italic;
-      color: var(--text);
-      margin-bottom: 4px;
-      align-self: flex-start;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
     }
 
-    .form-sub {
-      font-size: 13px;
+    .form-subtitle {
+      font-size: 14px;
       color: var(--muted);
-      margin-bottom: 32px;
-      align-self: flex-start;
+      margin-bottom: 36px;
+      font-weight: 300;
     }
 
-    .form {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .form-subtitle a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
     }
 
-    .field {
+    .form-subtitle a:hover { border-color: var(--accent); }
+
+    /* Social login */
+    .social-buttons {
       display: flex;
-      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 400;
+    }
+
+    .social-btn:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-1px);
+    }
+
+    .social-btn svg { width: 18px; height: 18px; }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .or-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .or-text {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Form fields */
+    .field {
+      margin-bottom: 16px;
     }
 
     label {
-      font-size: 11px;
-      letter-spacing: 2px;
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 8px;
     }
 
     .input-wrap {
       position: relative;
     }
 
-    .input-wrap input {
+    input {
       width: 100%;
       padding: 14px 16px 14px 44px;
       background: var(--input-bg);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 10px;
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s, background 0.2s;
+      transition: all 0.25s;
+      font-weight: 300;
     }
 
-    .input-wrap input:focus {
-      border-color: rgba(232,67,45,0.5);
-      background: rgba(255,255,255,0.06);
-    }
+    input::placeholder { color: rgba(240,237,232,0.2); }
 
-    .input-wrap input::placeholder { color: var(--muted); }
+    input:focus {
+      border-color: var(--accent);
+      background: rgba(232,255,71,0.04);
+      box-shadow: 0 0 0 3px rgba(232,255,71,0.08);
+    }
 
     .input-icon {
       position: absolute;
@@ -281,30 +334,34 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--muted);
-      font-size: 16px;
       pointer-events: none;
     }
+
+    .input-icon svg { width: 17px; height: 17px; display: block; }
 
     .eye-toggle {
       position: absolute;
       right: 14px;
       top: 50%;
       transform: translateY(-50%);
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 16px;
       background: none;
       border: none;
+      color: var(--muted);
+      cursor: pointer;
       padding: 0;
+      display: flex;
+      align-items: center;
       transition: color 0.2s;
     }
 
     .eye-toggle:hover { color: var(--text); }
+    .eye-toggle svg { width: 17px; height: 17px; }
 
-    .row {
+    .form-options {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
     }
 
     .remember {
@@ -312,314 +369,389 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
+      user-select: none;
     }
 
     .remember input[type="checkbox"] {
+      width: 16px; height: 16px;
+      padding: 0;
       accent-color: var(--accent);
-      width: 14px;
-      height: 14px;
+      cursor: pointer;
     }
 
     .forgot {
-      font-size: 12px;
-      color: var(--accent);
+      font-size: 13px;
+      color: var(--muted);
       text-decoration: none;
-      transition: opacity 0.2s;
+      transition: color 0.2s;
     }
 
-    .forgot:hover { opacity: 0.7; }
+    .forgot:hover { color: var(--accent); }
 
+    /* Submit button */
     .btn-login {
-      margin-top: 8px;
       width: 100%;
       padding: 15px;
       background: var(--accent);
-      color: white;
+      color: #0a0a0c;
       border: none;
-      border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      border-radius: 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 3px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: transform 0.15s, box-shadow 0.2s;
+      transition: all 0.25s;
+      margin-bottom: 20px;
     }
 
-    .btn-login::after {
+    .btn-login::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
-      transform: translateX(-100%);
-      transition: transform 0.5s;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
     }
 
-    .btn-login:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(232,67,45,0.4); }
-    .btn-login:hover::after { transform: translateX(100%); }
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(232,255,71,0.3);
+    }
+
+    .btn-login:hover::before { opacity: 1; }
+
     .btn-login:active { transform: translateY(0); }
 
-    .or-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 4px 0;
+    /* Ripple effect */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      transform: scale(0);
+      animation: ripple-anim 0.5s linear;
+      pointer-events: none;
     }
 
-    .or-line { flex: 1; height: 1px; background: var(--border); }
-    .or-text { font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+    @keyframes ripple-anim {
+      to { transform: scale(4); opacity: 0; }
+    }
 
-    .btn-social {
-      width: 100%;
-      padding: 13px;
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      cursor: pointer;
+    /* Now playing pill */
+    .now-playing {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 10px;
-      transition: border-color 0.2s, background 0.2s;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 8px 14px;
+      width: fit-content;
+      margin-top: 12px;
+      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.4s both;
     }
 
-    .btn-social:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); }
+    .np-dot {
+      width: 8px; height: 8px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
 
-    .signup-row {
-      margin-top: 32px;
-      font-size: 13px;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.6; transform: scale(0.8); }
+    }
+
+    .np-text {
+      font-size: 12px;
       color: var(--muted);
-      text-align: center;
+      font-weight: 300;
     }
 
-    .signup-row a {
-      color: var(--accent2);
-      text-decoration: none;
+    .np-text span {
+      color: var(--text);
       font-weight: 500;
     }
 
-    .signup-row a:hover { text-decoration: underline; }
-
-    /* Now playing bar */
-    .now-playing {
-      position: absolute;
-      bottom: 28px;
-      left: 20px; right: 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 16px;
+    /* Mini equalizer bars */
+    .eq-bars {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
     }
 
-    .np-disc {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #e8432d, #f5a623);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-      animation: spin 4s linear infinite;
+    .eq-bar {
+      width: 3px;
+      background: var(--accent2);
+      border-radius: 1px;
+      animation: eq 0.8s ease-in-out infinite alternate;
     }
 
-    .np-info { flex: 1; overflow: hidden; }
-    .np-title { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .np-artist { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .eq-bar:nth-child(1) { height: 6px;  animation-delay: 0s;    }
+    .eq-bar:nth-child(2) { height: 12px; animation-delay: 0.1s;  }
+    .eq-bar:nth-child(3) { height: 8px;  animation-delay: 0.2s;  }
+    .eq-bar:nth-child(4) { height: 14px; animation-delay: 0.05s; }
 
-    .np-controls { display: flex; gap: 10px; align-items: center; }
-    .np-btn { background: none; border: none; color: var(--muted); font-size: 14px; cursor: pointer; padding: 4px; transition: color 0.2s; }
-    .np-btn:hover { color: var(--text); }
-    .np-btn.play { color: var(--accent); font-size: 18px; }
-
-    .progress-bar {
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 60%;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 0 0 0 8px;
-      animation: progress 20s linear infinite;
+    @keyframes eq {
+      from { transform: scaleY(0.3); }
+      to   { transform: scaleY(1); }
     }
 
-    @keyframes progress {
-      from { width: 0%; }
-      to { width: 100%; }
+    /* Fade-up entry animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* Success state */
+    .btn-login.success {
+      background: #4ade80;
+      pointer-events: none;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      .art-panel { display: none; }
-      .form-panel { width: 100%; min-height: 100vh; }
+      .page { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .divider { display: none; }
+      .right-panel { padding: 40px 28px; }
     }
   </style>
 </head>
 <body>
 
-<!-- LEFT: Art Panel -->
-<div class="art-panel">
-  <div class="notes">
-    <span class="note">♪</span>
-    <span class="note">♫</span>
-    <span class="note">♩</span>
-    <span class="note">♬</span>
-    <span class="note">♭</span>
+  <!-- Background -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
 
-  <div class="vinyl">
-    <svg viewBox="0 0 320 320">
-      <defs>
-        <radialGradient id="diskGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#1a0a08"/>
-          <stop offset="100%" stop-color="#0d0507"/>
-        </radialGradient>
-      </defs>
-      <!-- Main disk -->
-      <circle cx="160" cy="160" r="155" fill="url(#diskGrad)" stroke="#2a1210" stroke-width="1"/>
-      <!-- Grooves -->
-      <circle cx="160" cy="160" r="150" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="140" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="130" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="120" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="110" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="100" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="90" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="80" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <circle cx="160" cy="160" r="70" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-      <!-- Accent ring -->
-      <circle cx="160" cy="160" r="60" fill="none" stroke="rgba(232,67,45,0.2)" stroke-width="1.5"/>
-      <!-- Label area -->
-      <circle cx="160" cy="160" r="55" fill="#1a0e0a"/>
-      <!-- Center hole -->
-      <circle cx="160" cy="160" r="5" fill="#0a0708"/>
-    </svg>
-    <div class="vinyl-label">
-      <div class="vinyl-inner">
-        <span>V</span>
+  <!-- Waveform -->
+  <div class="waveform" id="waveform"></div>
+
+  <div class="page">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.3"/>
+          </svg>
+        </div>
+        <span class="brand-name">Resonance</span>
       </div>
-    </div>
-  </div>
 
-  <div class="tagline">
-    <h1>Music lives<br/>in the soul.</h1>
-    <p>Premium listening experience</p>
-  </div>
-</div>
+      <h1 class="left-headline">
+        FEEL<br/>
+        THE<br/>
+        <em>BEAT.</em>
+      </h1>
 
-<!-- RIGHT: Form Panel -->
-<div class="form-panel">
-  <div class="logo">Velvet</div>
-  <div class="logo-sub">Music for the discerning ear</div>
+      <p class="left-sub">
+        Millions of songs. Zero limits. Your soundtrack,
+        perfectly tuned to every moment of your life.
+      </p>
 
-  <div class="form-title">Welcome back.</div>
-  <div class="form-sub">Sign in to continue your journey.</div>
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-num">80M+</span>
+          <span class="stat-label">Tracks</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">200+</span>
+          <span class="stat-label">Countries</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">500K</span>
+          <span class="stat-label">Artists</span>
+        </div>
+      </div>
 
-  <form class="form" onsubmit="handleLogin(event)">
-    <div class="field">
-      <label for="email">Email</label>
-      <div class="input-wrap">
-        <span class="input-icon">✉</span>
-        <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+      <div class="now-playing">
+        <div class="np-dot"></div>
+        <div class="eq-bars">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+        <span class="np-text"><span>Blinding Lights</span> · The Weeknd</span>
       </div>
     </div>
 
-    <div class="field">
-      <label for="password">Password</label>
-      <div class="input-wrap">
-        <span class="input-icon">🔒</span>
-        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
-        <button type="button" class="eye-toggle" onclick="togglePassword()" id="eyeBtn">👁</button>
+    <div class="divider"></div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <p class="form-title">Welcome Back</p>
+      <p class="form-subtitle">
+        New here? <a href="#">Create a free account</a>
+      </p>
+
+      <!-- Social -->
+      <div class="social-buttons">
+        <button class="social-btn">
+          <!-- Google icon -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+        <button class="social-btn">
+          <!-- Apple icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.56-1.31 3.1-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+          </svg>
+          Apple
+        </button>
+        <button class="social-btn">
+          <!-- Spotify icon -->
+          <svg viewBox="0 0 24 24" fill="#1DB954">
+            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115.294.18.387.563.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.13-9.965-1.166a.78.78 0 01-.963-.519.781.781 0 01.52-.963c3.632-1.102 8.147-.568 11.223 1.329a.78.78 0 01.257 1.062zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.794c3.504-1.063 9.336-.857 13.019 1.357a.937.937 0 01-.86 1.664z"/>
+          </svg>
+          Spotify
+        </button>
       </div>
+
+      <div class="or-divider">
+        <div class="or-line"></div>
+        <span class="or-text">or</span>
+        <div class="or-line"></div>
+      </div>
+
+      <!-- Form -->
+      <div class="field">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <span class="input-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m2 7 10 7 10-7"/>
+            </svg>
+          </span>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </span>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="eye-toggle" id="eyeToggle" type="button" aria-label="Toggle password">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-options">
+        <label class="remember">
+          <input type="checkbox" id="remember"/>
+          Remember me
+        </label>
+        <a href="#" class="forgot">Forgot password?</a>
+      </div>
+
+      <button class="btn-login" id="loginBtn" type="button">
+        Sign In
+      </button>
+
+      <p style="text-align:center; font-size:12px; color:var(--muted); font-weight:300;">
+        By signing in, you agree to our
+        <a href="#" style="color:var(--muted); text-decoration:underline;">Terms</a> &amp;
+        <a href="#" style="color:var(--muted); text-decoration:underline;">Privacy Policy</a>
+      </p>
     </div>
 
-    <div class="row">
-      <label class="remember">
-        <input type="checkbox"/> Keep me signed in
-      </label>
-      <a href="#" class="forgot">Forgot password?</a>
-    </div>
-
-    <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
-
-    <div class="or-row">
-      <div class="or-line"></div>
-      <span class="or-text">OR</span>
-      <div class="or-line"></div>
-    </div>
-
-    <button type="button" class="btn-social" onclick="socialLogin('Google')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
-      Continue with Google
-    </button>
-  </form>
-
-  <div class="signup-row">
-    New to Velvet? <a href="#">Create a free account</a>
   </div>
 
-  <!-- Now Playing bar -->
-  <div class="now-playing">
-    <div class="np-disc">♪</div>
-    <div class="np-info">
-      <div class="np-title">Clair de Lune</div>
-      <div class="np-artist">Claude Debussy</div>
-    </div>
-    <div class="np-controls">
-      <button class="np-btn">⏮</button>
-      <button class="np-btn play">⏸</button>
-      <button class="np-btn">⏭</button>
-    </div>
-    <div class="progress-bar"></div>
-  </div>
-</div>
-
-<script>
-  function togglePassword() {
-    const input = document.getElementById('password');
-    const btn = document.getElementById('eyeBtn');
-    if (input.type === 'password') {
-      input.type = 'text';
-      btn.textContent = '🙈';
-    } else {
-      input.type = 'password';
-      btn.textContent = '👁';
+  <script>
+    // Generate waveform bars
+    const waveform = document.getElementById('waveform');
+    const numBars = Math.floor(window.innerWidth / 8);
+    for (let i = 0; i < numBars; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'wave-bar';
+      const min = 0.1 + Math.random() * 0.3;
+      const max = 0.4 + Math.random() * 0.9;
+      bar.style.setProperty('--min', min);
+      bar.style.setProperty('--max', max);
+      bar.style.animationDelay = (Math.random() * 2) + 's';
+      bar.style.animationDuration = (0.8 + Math.random() * 1.2) + 's';
+      waveform.appendChild(bar);
     }
-  }
 
-  function handleLogin(e) {
-    e.preventDefault();
-    const btn = document.getElementById('loginBtn');
-    btn.textContent = 'Signing in…';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = '✓ Welcome back';
-      btn.style.background = '#2d7a3a';
-      setTimeout(() => {
-        btn.textContent = 'Sign In';
-        btn.disabled = false;
-        btn.style.background = '';
-      }, 2000);
-    }, 1400);
-  }
+    // Password toggle
+    const eyeToggle = document.getElementById('eyeToggle');
+    const passwordInput = document.getElementById('password');
+    let visible = false;
+    eyeToggle.addEventListener('click', () => {
+      visible = !visible;
+      passwordInput.type = visible ? 'text' : 'password';
+      eyeToggle.innerHTML = visible
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    });
 
-  function socialLogin(provider) {
-    alert(`Connecting with ${provider}…`);
-  }
-</script>
+    // Ripple + login
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.addEventListener('click', function(e) {
+      // Ripple
+      const rect = loginBtn.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+      loginBtn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
 
+      // Validation
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      if (!email || !password) {
+        loginBtn.style.background = '#ff4f7b';
+        loginBtn.textContent = 'Fill All Fields';
+        setTimeout(() => {
+          loginBtn.style.background = 'var(--accent)';
+          loginBtn.textContent = 'Sign In';
+        }, 1800);
+        return;
+      }
+
+      // Success
+      loginBtn.classList.add('success');
+      loginBtn.textContent = '✓ Welcome Back!';
+    });
+
+    // Social button hover sound-like feedback (visual)
+    document.querySelectorAll('.social-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transform = 'translateY(-2px)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+  </script>
 </body>
 </html>
